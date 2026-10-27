@@ -1,66 +1,61 @@
-REPORT
 AgriTitans: Where Farmers Want Credit but Can’t Reach a Bank
 
 NISR Big Data Hackathon | Track 2: Financial Inclusion and Poverty Reduction
+
+Team AgriTitans: Delice Ishimwe and Sarah Mukuti Mutisya, Master of Science students at Carnegie Mellon University Africa
+
 Live dashboard: https://nisr-big-data-hackathon-ldhv7hqtp5e9vygehio2t2.streamlit.app/
 
 1. The short version
-
 Farming is how most Rwandan households make a living, and farming runs on money at specific moments: seed and fertiliser before the season, labour at harvest, a buffer when rain fails. A farmer who can’t save safely or borrow fairly has to carry all of that risk alone.
-
-We used the 2024 Agricultural Household Survey to compare two things for each province: how many agricultural households have a bank account, and how many want a loan. Where demand for credit is higher than access to banking, there is a gap that is easy to see and, we think, possible to close. Our dashboard turns that comparison into a ranked list of provinces and a suggested focus for each one.
+We used the 2024 Agricultural Household Survey to compare two things for each province: how many agricultural households have a bank account, and how many want a loan. Where demand for credit is higher than access to banking, there is a gap that is easy to see and, we think, possible to close. Our dashboard turns that comparison into a ranked list of provinces and a suggested focus for each one. Across the five provinces, Kigali comes out first: only about 57% of its agricultural households have a bank account, while about 68% want a loan. The West has the widest gap, with 80% wanting a loan against 65% who are banked.
 
 2. Why we chose this problem
-
 Track 2 asks how data can show financial exclusion and help reduce poverty. We looked for a place where the data could point to a decision rather than just describe a situation. Agricultural households were the obvious choice. They are numerous, they depend on seasonal cash flow, and the survey measures both sides of the question: access and demand.
-
 This also fits what Rwanda has already committed to. NST2 and Vision 2050 both treat agricultural transformation and wider financial inclusion as priorities. Our tool does not add a new goal. It helps decide where to start.
 
 3. Data and approach
-
 Data. NISR’s Agricultural Household Survey 2024, summarised by province. For each province we used four measures: the share of agricultural households with a bank account, the share requesting a loan, and the same two shares for farmers specifically.
-
 What we calculated.
-
-Inclusion gap: loan demand minus bank access, in percentage points. A positive number means more people want credit than have a bank account.
-Loan-to-bank ratio: loan demand divided by bank access. It shows the same thing in relative terms, so a small gap in a low-access province isn’t hidden.
-Priority Index (0 to 100): a weighted mix of the gap, the ratio, and how low bank access is. Each part is scaled to the same range before combining. We set default weights of 40, 30 and 30, but the dashboard lets users change them, because a ministry and a microfinance lender may not care about the same things.
-
+• Inclusion gap: loan demand minus bank access, in percentage points. A positive number means more people want credit than have a bank account.
+• Loan-to-bank ratio: loan demand divided by bank access. It shows the same thing in relative terms, so a small gap in a low-access province isn’t hidden.
+• Priority Index (0 to 100): a weighted mix of the gap, the ratio, and how low bank access is. Each part is scaled to the same range (min-max) before combining. We set default weights of 40, 30 and 30, but the dashboard lets users change them, because a ministry and a microfinance lender may not care about the same things.
+Provinces are then placed in a tier (High at 66 and above, Medium from 33 to 65, Low below 33) and given a profile based on whether their bank access and loan demand sit above or below the median across provinces.
 We kept this deliberately simple. With a small number of provinces, a complicated model would look impressive and mean little. A transparent index that anyone can inspect and adjust is more useful to the people who would actually use it.
 
 4. What we found
-
-Across the provinces, average household bank access is [1]% while average household loan demand is [2]%. In [3] provinces, demand for loans is higher than access to a bank account.
-
-The largest gap is in [4]. The lowest bank access is in [5]. When we combine everything into the Priority Index, [6] ranks first, which makes it the strongest candidate for attention. [7] looks best served relative to the others.
-
-The point of the profiles in the dashboard is that provinces don’t all have the same problem. A province with low access and high demand needs a different response from one where both are low. In the first, people are ready to borrow and the supply isn’t reaching them. In the second, trust and awareness have to come first. Treating them the same would waste money in at least one of them.
+Across the five provinces in our summary data, average household bank access is 62.2% while average household loan demand is 70.7%. In four of the five provinces (West, Kigali, East and South), demand for loans is higher than access to a bank account. Only the North has access above demand. Among farmers specifically the picture differs: average farmer bank access is 46.5% and average farmer loan demand is 41.0%. Farmer bank access is well below the household figure, which is why the dashboard shows households and farmers separately.
+The largest gap is in the West, where loan demand (80.3%) exceeds bank access (65.1%) by 15.2 percentage points. The lowest bank access is in Kigali (56.9%), followed closely by the East (58.1%). Three provinces pass the dashboard’s default alert threshold of 10 points: the West (+15.2), Kigali (+11.1) and the East (+10.9). When we combine everything into the Priority Index, Kigali ranks first with a score of 85.8, ahead of the East (80.9) and the West (76.8), all in the High tier. Kigali sits above the West despite a smaller gap because it has the lowest bank access of all five provinces, and the index gives low access a weight of 30%. The South follows in the Medium tier with 46.6 and a gap of 6.7 points. The North looks best served relative to the others: 67.5% of its households have a bank account and 66.0% want a loan, a gap of minus 1.5 points, and it scores 0.
+That score of 0 needs careful reading. The index is scaled between the five provinces being compared, so the North scores 0 because it is the best placed of the group, not because it has no need. About one household in three there still has no bank account.
+The profiles in the dashboard show that provinces don’t all have the same problem. The East is labelled “unmet credit demand”: access below the median and demand at or above it, which points toward agent banking, mobile lending and SACCO-linked seasonal loans. The West and South are labelled “active borrowers”: demand is high and access is better, so loan product fit, affordable rates and crop insurance matter more than reaching new customers. The North is relatively well served. Kigali needs a careful reading. The dashboard labels it “low access, low demand” because its loan demand (68.0%) sits just below the five-province median (69.1%), and it suggests account-opening drives and financial literacy first. Yet 68% of Kigali’s households still say they want a loan and its gap is +11.1 points, so we read that label as relative to the other provinces, not as a sign of weak demand.
 
 5. What the dashboard does
-Ranks provinces by need, with a Priority Index users can reweight
-Flags provinces where the gap passes a threshold the user sets
-Shows access versus demand for households and for farmers separately
-Gives each province a profile and a suggested focus, such as agent banking and seasonal loans where demand is unmet, or account-opening drives and financial literacy where both measures are low
-Exports the ranking as a CSV, so it can go straight into a planning document
-6. Who it helps
-Policymakers (MINAGRI, MINECOFIN, districts): decide where credit guarantees, extension support or agent networks should go first.
-Banks, SACCOs and microfinance institutions: see where demand already exists before opening branches or agents.
-Civil society and development partners: direct financial literacy and savings-group work to the provinces that need it most.
-Farmer cooperatives: point to evidence of local demand when negotiating with lenders.
+• Ranks provinces by need, with a Priority Index users can reweight
+• Flags provinces where the gap passes a threshold the user sets
+• Shows access versus demand for households and for farmers separately
+• Gives each province a profile and a suggested focus, such as agent banking and seasonal loans where demand is unmet, or account-opening drives and financial literacy where both measures are low
+• Exports the ranking as a CSV, so it can go straight into a planning document
 
+6. Who it helps
+• Policymakers (MINAGRI, MINECOFIN, districts): decide where credit guarantees, extension support or agent networks should go first.
+• Banks, SACCOs and microfinance institutions: see where demand already exists before opening branches or agents.
+• Civil society and development partners: direct financial literacy and savings-group work to the provinces that need it most.
+• Farmer cooperatives: point to evidence of local demand when negotiating with lenders.
 For vulnerable households, the benefit is indirect but real. Better-targeted credit and banking services mean more farmers can invest in their land and ride out a bad season without selling assets.
 
 7. Limits we want to be upfront about
-Loan percentage in the survey reflects households requesting credit, not loans approved or used. High demand might also reflect need caused by hardship, not only appetite for investment.
-Provincial averages hide big differences between districts, and between small and large farms.
-Our averages across provinces are not weighted by population, so they should not be read as national figures.
-The Priority Index is relative. It tells you which provinces rank higher than others, not how severe the problem is in absolute terms.
-The tool describes patterns. It does not prove that expanding access would reduce poverty.
-8. What we would do next
-Repeat the analysis at district level, where decisions are really made.
-Add loan approval and repayment data to separate unmet demand from distress borrowing.
-Link in poverty and social protection data so we can see whether the least-banked areas are also the poorest, and whether existing programmes reach them.
-Weight results by household counts to produce national estimates.
-9. Team
+• Loan percentage in the survey reflects households requesting credit, not loans approved or used. High demand might also reflect need caused by hardship, not only appetite for investment.
+• Our data has five provinces, and the Priority Index is scaled between them. It is relative: it tells you which provinces rank higher than others, not how severe the problem is in absolute terms.
+• Profile labels such as “low demand” depend on the median across provinces, so a province can be labelled low even when most of its households want a loan.
+• Provincial averages hide big differences between districts, and between small and large farms.
+• Our averages across provinces are not weighted by population, so they should not be read as national figures.
+• The tool describes patterns. It does not prove that expanding access would reduce poverty.
 
-AgriTitans: [8]
+8. What we would do next
+• Repeat the analysis at district level, where decisions are really made.
+• Add loan approval and repayment data to separate unmet demand from distress borrowing.
+• Link in poverty and social protection data so we can see whether the least-banked areas are also the poorest, and whether existing programmes reach them.
+• Weight results by household counts to produce national estimates.
+
+9. Team
+AgriTitans: Delice Ishimwe and Sarah Mukuti Mutisya, Master of Science in Information Technology at Carnegie Mellon University Africa.
