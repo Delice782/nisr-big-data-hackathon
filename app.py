@@ -2,54 +2,44 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# ==========================================================
-# PAGE CONFIG
-# ==========================================================
-
+# page setup
 st.set_page_config(
     page_title="Agricultural Financial Inclusion Dashboard",
     page_icon="🌾",
     layout="wide"
 )
 
-# ==========================================================
-# LOAD DATA
-# ==========================================================
-
-# Replace with your actual dataframe loading logic
+# load data
 dashboard_df = pd.read_csv("dashboard_data.csv")
 
-# ==========================================================
-# DERIVED METRICS
-# ==========================================================
-
+# derived metrics
 dashboard_df["Loan_to_Bank_Ratio"] = (
-    dashboard_df["HH_Loan_Percentage"]
-    / dashboard_df["HH_Bank_Percentage"]
+    dashboard_df["HH_Loan_Percentage"] / dashboard_df["HH_Bank_Percentage"]
 )
-
 dashboard_df["Financial_Inclusion_Gap"] = (
-    dashboard_df["HH_Loan_Percentage"]
-    - dashboard_df["HH_Bank_Percentage"]
+    dashboard_df["HH_Loan_Percentage"] - dashboard_df["HH_Bank_Percentage"]
+)
+dashboard_df["Financial_Score"] = (
+    dashboard_df["HH_Bank_Percentage"] * 0.5
+    + dashboard_df["Farmer_Bank_Percentage"] * 0.5
 )
 
-# ==========================================================
-# TITLE
-# ==========================================================
-
-st.title("🌾 Agricultural Financial Inclusion Dashboard")
-st.caption("Agricultural Household Survey 2024")
-
-# ==========================================================
-# EXECUTIVE SUMMARY
-# ==========================================================
-
-st.markdown("## Executive Summary")
-
+# values reused in several sections
 avg_hh_bank = dashboard_df["HH_Bank_Percentage"].mean()
 avg_hh_loan = dashboard_df["HH_Loan_Percentage"].mean()
 avg_farmer_bank = dashboard_df["Farmer_Bank_Percentage"].mean()
 avg_farmer_loan = dashboard_df["Farmer_Loan_Percentage"].mean()
+
+highest_bank = dashboard_df.loc[dashboard_df["HH_Bank_Percentage"].idxmax()]
+highest_loan = dashboard_df.loc[dashboard_df["HH_Loan_Percentage"].idxmax()]
+largest_gap = dashboard_df.loc[dashboard_df["Financial_Inclusion_Gap"].idxmax()]
+
+# title
+st.title("🌾 Agricultural Financial Inclusion Dashboard")
+st.caption("Agricultural Household Survey 2024")
+
+# executive summary
+st.markdown("## Executive Summary")
 
 st.info(
     f"""
@@ -67,51 +57,25 @@ st.info(
     """
 )
 
-# ==========================================================
-# KPI SECTION
-# ==========================================================
-
+# key indicators (KPI cards)
 st.markdown("## Key Indicators")
 
-col1, col2, col3, col4 = st.columns(4)
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("Agricultural HH Bank Access", f"{avg_hh_bank:.1f}%")
+c2.metric("Agricultural HH Loan Demand", f"{avg_hh_loan:.1f}%")
+c3.metric("Farmer Bank Access", f"{avg_farmer_bank:.1f}%")
+c4.metric("Farmers Requesting Loans", f"{avg_farmer_loan:.1f}%")
 
-col1.metric(
-    "Agricultural HH Bank Access",
-    f"{avg_hh_bank:.1f}%"
-)
-
-col2.metric(
-    "Agricultural HH Loan Demand",
-    f"{avg_hh_loan:.1f}%"
-)
-
-col3.metric(
-    "Farmer Bank Access",
-    f"{avg_farmer_bank:.1f}%"
-)
-
-col4.metric(
-    "Farmers Requesting Loans",
-    f"{avg_farmer_loan:.1f}%"
-)
-
-# ==========================================================
-# BANK ACCOUNTS VS LOANS
-# ==========================================================
-
+# banking access vs loan demand
 st.markdown("---")
 st.markdown("## Banking Access vs Loan Demand")
 
 comparison_df = dashboard_df.melt(
     id_vars="Province",
-    value_vars=[
-        "HH_Bank_Percentage",
-        "HH_Loan_Percentage"
-    ],
+    value_vars=["HH_Bank_Percentage", "HH_Loan_Percentage"],
     var_name="Metric",
     value_name="Percentage"
 )
-
 comparison_df["Metric"] = comparison_df["Metric"].replace({
     "HH_Bank_Percentage": "Bank Account Percentage",
     "HH_Loan_Percentage": "Loan Percentage"
@@ -126,12 +90,10 @@ fig1 = px.bar(
     title="Agricultural Households: Bank Accounts vs Loan Requests"
 )
 
-col1, col2 = st.columns([3,1])
-
-with col1:
+left, right = st.columns([3, 1])
+with left:
     st.plotly_chart(fig1, use_container_width=True)
-
-with col2:
+with right:
     st.markdown("### Summary")
     st.write(
         """
@@ -141,10 +103,7 @@ with col2:
         """
     )
 
-# ==========================================================
-# FINANCIAL INCLUSION GAP
-# ==========================================================
-
+# financial inclusion gap
 st.markdown("---")
 st.markdown("## Financial Inclusion Gap")
 
@@ -154,24 +113,14 @@ fig2 = px.bar(
     y="Financial_Inclusion_Gap",
     color="Financial_Inclusion_Gap",
     title="Loan Demand Minus Bank Account Access",
-    labels={
-        "Financial_Inclusion_Gap":
-        "Financial Inclusion Gap (%)"
-    }
+    labels={"Financial_Inclusion_Gap": "Financial Inclusion Gap (%)"}
 )
 
-col1, col2 = st.columns([3,1])
-
-with col1:
+left, right = st.columns([3, 1])
+with left:
     st.plotly_chart(fig2, use_container_width=True)
-
-with col2:
+with right:
     st.markdown("### Insight")
-
-    largest_gap = dashboard_df.loc[
-        dashboard_df["Financial_Inclusion_Gap"].idxmax()
-    ]
-
     st.warning(
         f"""
         {largest_gap['Province']} exhibits the largest gap between
@@ -182,10 +131,7 @@ with col2:
         """
     )
 
-# ==========================================================
-# LOAN TO BANK RATIO
-# ==========================================================
-
+# loan-to-bank ratio
 st.markdown("---")
 st.markdown("## Loan-to-Bank Ratio")
 
@@ -195,19 +141,14 @@ fig3 = px.bar(
     y="Loan_to_Bank_Ratio",
     color="Loan_to_Bank_Ratio",
     title="Loan Demand Relative to Banking Access",
-    labels={
-        "Loan_to_Bank_Ratio": "Loan Bank Ratio"
-    }
+    labels={"Loan_to_Bank_Ratio": "Loan Bank Ratio"}
 )
 
-col1, col2 = st.columns([3,1])
-
-with col1:
+left, right = st.columns([3, 1])
+with left:
     st.plotly_chart(fig3, use_container_width=True)
-
-with col2:
+with right:
     st.markdown("### Interpretation")
-
     st.write(
         """
         Values above 1 indicate that loan demand exceeds the level of banking participation.
@@ -216,18 +157,9 @@ with col2:
         """
     )
 
-# ==========================================================
-# PROVINCIAL SCORECARD
-# ==========================================================
-
+# provincial scorecard
 st.markdown("---")
 st.markdown("## Provincial Scorecard")
-
-dashboard_df["Financial_Score"] = (
-    dashboard_df["HH_Bank_Percentage"] * 0.5
-    +
-    dashboard_df["Farmer_Bank_Percentage"] * 0.5
-)
 
 scorecard = dashboard_df[[
     "Province",
@@ -239,52 +171,28 @@ scorecard = dashboard_df[[
 ]]
 
 st.dataframe(
-    scorecard.sort_values(
-        by="Financial_Score",
-        ascending=False
-    ),
+    scorecard.sort_values(by="Financial_Score", ascending=False),
     use_container_width=True
 )
 
-
-# KEY FINDINGS
-
-
+# key findings
 st.markdown("---")
 st.markdown("## Key Findings")
-
-highest_bank = dashboard_df.loc[
-    dashboard_df["HH_Bank_Percentage"].idxmax()
-]
-
-highest_loan = dashboard_df.loc[
-    dashboard_df["HH_Loan_Percentage"].idxmax()
-]
-
-largest_gap = dashboard_df.loc[
-    dashboard_df["Financial_Inclusion_Gap"].idxmax()
-]
 
 st.success(
     f"Highest banking access: {highest_bank['Province']} "
     f"({highest_bank['HH_Bank_Percentage']:.1f}%)"
 )
-
 st.info(
     f"Highest loan demand: {highest_loan['Province']} "
     f"({highest_loan['HH_Loan_Percentage']:.1f}%)"
 )
-
 st.warning(
-    f"Largest financial inclusion gap: "
-    f"{largest_gap['Province']} "
+    f"Largest financial inclusion gap: {largest_gap['Province']} "
     f"({largest_gap['Financial_Inclusion_Gap']:.1f} percentage points)"
 )
 
-
-# RECOMMENDATIONS
-
-
+# recommendations
 st.markdown("---")
 st.markdown("## Recommendations")
 
@@ -323,10 +231,6 @@ with st.expander("🌱 Reduce Poverty Among Agricultural Households"):
     • Expand agricultural extension and productivity programmes.
     """)
 
-# FOOTER
-
-
+# footer
 st.markdown("---")
-st.caption(
-    "Agricultural Household Financial Inclusion Dashboard | AHS 2024"
-)
+st.caption("Agricultural Household Financial Inclusion Dashboard | AHS 2024")
