@@ -1,0 +1,66 @@
+REPORT
+AgriTitans: Where Farmers Want Credit but Can’t Reach a Bank
+
+NISR Big Data Hackathon | Track 2: Financial Inclusion and Poverty Reduction
+Live dashboard: https://nisr-big-data-hackathon-ldhv7hqtp5e9vygehio2t2.streamlit.app/
+
+1. The short version
+
+Farming is how most Rwandan households make a living, and farming runs on money at specific moments: seed and fertiliser before the season, labour at harvest, a buffer when rain fails. A farmer who can’t save safely or borrow fairly has to carry all of that risk alone.
+
+We used the 2024 Agricultural Household Survey to compare two things for each province: how many agricultural households have a bank account, and how many want a loan. Where demand for credit is higher than access to banking, there is a gap that is easy to see and, we think, possible to close. Our dashboard turns that comparison into a ranked list of provinces and a suggested focus for each one.
+
+2. Why we chose this problem
+
+Track 2 asks how data can show financial exclusion and help reduce poverty. We looked for a place where the data could point to a decision rather than just describe a situation. Agricultural households were the obvious choice. They are numerous, they depend on seasonal cash flow, and the survey measures both sides of the question: access and demand.
+
+This also fits what Rwanda has already committed to. NST2 and Vision 2050 both treat agricultural transformation and wider financial inclusion as priorities. Our tool does not add a new goal. It helps decide where to start.
+
+3. Data and approach
+
+Data. NISR’s Agricultural Household Survey 2024, summarised by province. For each province we used four measures: the share of agricultural households with a bank account, the share requesting a loan, and the same two shares for farmers specifically.
+
+What we calculated.
+
+Inclusion gap: loan demand minus bank access, in percentage points. A positive number means more people want credit than have a bank account.
+Loan-to-bank ratio: loan demand divided by bank access. It shows the same thing in relative terms, so a small gap in a low-access province isn’t hidden.
+Priority Index (0 to 100): a weighted mix of the gap, the ratio, and how low bank access is. Each part is scaled to the same range before combining. We set default weights of 40, 30 and 30, but the dashboard lets users change them, because a ministry and a microfinance lender may not care about the same things.
+
+We kept this deliberately simple. With a small number of provinces, a complicated model would look impressive and mean little. A transparent index that anyone can inspect and adjust is more useful to the people who would actually use it.
+
+4. What we found
+
+Across the provinces, average household bank access is [1]% while average household loan demand is [2]%. In [3] provinces, demand for loans is higher than access to a bank account.
+
+The largest gap is in [4]. The lowest bank access is in [5]. When we combine everything into the Priority Index, [6] ranks first, which makes it the strongest candidate for attention. [7] looks best served relative to the others.
+
+The point of the profiles in the dashboard is that provinces don’t all have the same problem. A province with low access and high demand needs a different response from one where both are low. In the first, people are ready to borrow and the supply isn’t reaching them. In the second, trust and awareness have to come first. Treating them the same would waste money in at least one of them.
+
+5. What the dashboard does
+Ranks provinces by need, with a Priority Index users can reweight
+Flags provinces where the gap passes a threshold the user sets
+Shows access versus demand for households and for farmers separately
+Gives each province a profile and a suggested focus, such as agent banking and seasonal loans where demand is unmet, or account-opening drives and financial literacy where both measures are low
+Exports the ranking as a CSV, so it can go straight into a planning document
+6. Who it helps
+Policymakers (MINAGRI, MINECOFIN, districts): decide where credit guarantees, extension support or agent networks should go first.
+Banks, SACCOs and microfinance institutions: see where demand already exists before opening branches or agents.
+Civil society and development partners: direct financial literacy and savings-group work to the provinces that need it most.
+Farmer cooperatives: point to evidence of local demand when negotiating with lenders.
+
+For vulnerable households, the benefit is indirect but real. Better-targeted credit and banking services mean more farmers can invest in their land and ride out a bad season without selling assets.
+
+7. Limits we want to be upfront about
+Loan percentage in the survey reflects households requesting credit, not loans approved or used. High demand might also reflect need caused by hardship, not only appetite for investment.
+Provincial averages hide big differences between districts, and between small and large farms.
+Our averages across provinces are not weighted by population, so they should not be read as national figures.
+The Priority Index is relative. It tells you which provinces rank higher than others, not how severe the problem is in absolute terms.
+The tool describes patterns. It does not prove that expanding access would reduce poverty.
+8. What we would do next
+Repeat the analysis at district level, where decisions are really made.
+Add loan approval and repayment data to separate unmet demand from distress borrowing.
+Link in poverty and social protection data so we can see whether the least-banked areas are also the poorest, and whether existing programmes reach them.
+Weight results by household counts to produce national estimates.
+9. Team
+
+AgriTitans: [8]
